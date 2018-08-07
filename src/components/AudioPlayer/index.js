@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import { Text, View, Dimensions, Platform } from 'react-native';
 import * as Actions from '../../actions/index';
 import { connect } from 'react-redux';
-import styled from 'styled-components/native';
 import { bindActionCreators } from 'redux';
 import Video from 'react-native-video';
 import Styles from '../../styles';
 import * as Utils from "../../utils/audio"; //eslint-disable-line
+import TrackPlayer from 'react-native-track-player';
+
 import {
   ForwardButton,
   BackwardButton,
@@ -18,9 +19,7 @@ import {
 import MusicPlayer from '../../utils/MusicPlayer';
 import * as Progress from "react-native-progress"; //eslint-disable-line
 const { width } = Dimensions.get('window');
-import { autobind } from 'core-decorators';
 
-@autobind
 class AudioPlayer extends Component {
   constructor(props) {
     super(props);
@@ -40,22 +39,35 @@ class AudioPlayer extends Component {
 
   songImage = '';
 
-  componentDidMount() {
-    MusicPlayer.onPlay(() => {
-      this.setState({ playing: true });
-    });
-
-    MusicPlayer.onPause(() => {
-      this.setState({ playing: false });
-    });
-
-    MusicPlayer.onForward(this.goForward);
-
-    MusicPlayer.onBackward(this.goBackward);
-
+  async componentDidMount() {
+    // configure the Track player
+    await this.initTrackPlayer();
     // Set songs for the global state
     this.props.actions.setSongsList(this.state.songs);
     this.props.actions.setSelectedSongIndex(this.state.songIndex);
+    // initialize the player
+    const currentItem = this.state.songs[this.state.songIndex];
+    this.initPlayer({ items: this.state.songs, currentItem });
+
+    // to handle background/foreground switching
+    // AppState.addEventListener('change', this._handleAppStateChange);
+
+
+    // MusicPlayer.onPlay(() => {
+    //   this.setState({ playing: true });
+    // });
+
+    // MusicPlayer.onPause(() => {
+    //   this.setState({ playing: false });
+    // });
+
+    // MusicPlayer.onForward(this.goForward);
+
+    // MusicPlayer.onBackward(this.goBackward);
+
+    // // Set songs for the global state
+    // this.props.actions.setSongsList(this.state.songs);
+    // this.props.actions.setSelectedSongIndex(this.state.songIndex);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -64,13 +76,48 @@ class AudioPlayer extends Component {
     });
   }
 
+  initTrackPlayer = async () => {
+    // init the player
+    await TrackPlayer.setupPlayer();
+    // Configuring the player
+    TrackPlayer.updateOptions({
+      capabilities: [
+        TrackPlayer.CAPABILITY_PLAY,
+        TrackPlayer.CAPABILITY_PAUSE,
+        TrackPlayer.CAPABILITY_STOP,
+        TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
+        TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
+        TrackPlayer.CAPABILITY_PLAY_FROM_ID,
+        TrackPlayer.CAPABILITY_SEEK_TO
+      ],
+      stopWithApp: false,
+    });
+    return true;
+  }
+
+  initPlayer = async (items, currentItem) => {
+    // pause the previous item (if any)
+    TrackPlayer.pause();
+
+    // convert the items to tracks
+    const tracks = Utils.itemsToTracks(items);
+
+    // push all the items to the player
+    await TrackPlayer.add(tracks);
+
+    // skip to the current track, then play it
+    await TrackPlayer.skip(currentItem.id);
+    TrackPlayer.play();
+    this.setState({ playing: true });
+  }
+
   // eslint-disable-next-line
-  onLoad(params) {
+  onLoad = (params) => {
     this.setState({ songDuration: params.duration });
     this.setPlayingSong();
   }
 
-  setPlayingSong() {
+  setPlayingSong = () => {
     const song = this.state.songs[this.state.songIndex];
 
     MusicPlayer.setNowPlaying({
@@ -81,44 +128,44 @@ class AudioPlayer extends Component {
     });
   }
 
-  setTime(params) {
+  setTime = (params) => {
     if (!this.state.sliding) {
       this.setState({ currentTime: params.currentTime });
     }
   }
 
-  randomSongIndex() {
+  randomSongIndex = () => {
     const maxIndex = this.state.songs.length - 1;
     return Math.floor(Math.random() * (maxIndex - 0 + 1)) + 0; //eslint-disable-line
   }
 
-  toggleShuffle() {
+  toggleShuffle = () => {
     this.setState({ shuffle: !this.state.shuffle });
   }
 
-  toggleVolume() {
+  toggleVolume = () => {
     this.setState({ muted: !this.state.muted });
   }
 
-  togglePlay() {
+  togglePlay = () => {
     this.setState({ playing: !this.state.playing });
   }
 
-  handleSlidingStart() {
+  handleSlidingStart = () => {
     this.setState({ sliding: true });
   }
 
-  handleSlidingChange(value) {
+  handleSlidingChange = (value) => {
     const newPosition = value * this.state.songDuration;
     this.setState({ currentTime: newPosition });
   }
 
-  handleSlidingComplete() {
+  handleSlidingComplete = () => {
     this.refs.audio.seek(this.state.currentTime); //eslint-disable-line
     this.setState({ sliding: false });
   }
 
-  goForward() {
+  goForward = () => {
     if (
       this.state.shuffle ||
       this.state.songIndex + 1 !== this.state.songs.length
@@ -136,7 +183,7 @@ class AudioPlayer extends Component {
     }
   }
 
-  goBackward() {
+  goBackward = () => {
     if (this.state.currentTime < 3 && this.state.songIndex !== 0) {
       this.setState({
         songIndex: this.state.songIndex - 1,
@@ -152,12 +199,12 @@ class AudioPlayer extends Component {
     }
   }
 
-  onEnd() {
+  onEnd = () => {
     this.setState({ playing: false });
     this.setState({ playing: true });
   }
 
-  renderVideoPlayer() {
+  renderVideoPlayer = () => {
     if (this.state.songs[this.state.songIndex]) {
       return (
         <Video
@@ -179,7 +226,7 @@ class AudioPlayer extends Component {
     return null;
   }
 
-  renderProgressBar() {
+  renderProgressBar = () => {
     if (this.state.searchedSongs) {
       const song = this.state.songs[this.state.songIndex];
       return (

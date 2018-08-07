@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { StackNavigator, addNavigationHelpers } from 'react-navigation';
+import { createStackNavigator, addListener } from 'react-navigation';
 import HomeContainer from './Home';
 import Chapters from "./Chapters"; //eslint-disable-line
 import AudioPlayer from './AudioPlayer';
 
-export const AppNavigator = StackNavigator(
+export const AppNavigator = createStackNavigator(
   {
     Home: { screen: HomeContainer },
     Chapters: { screen: Chapters },
@@ -20,10 +20,11 @@ export const AppNavigator = StackNavigator(
 
 const AppWithNavigationState = ({ dispatch, navigation }) =>
   (<AppNavigator
-    navigation={addNavigationHelpers({
+    navigation={{
       dispatch,
-      state: navigation
-    })}
+      state: navigation,
+      addListener
+    }}
   />);
 
 AppWithNavigationState.propTypes = {

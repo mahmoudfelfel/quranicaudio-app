@@ -53,3 +53,12 @@ export const constants = {
   defaultTime: '00:00'
 };
 
+export const itemsToTracks = items => items.map(item => ({
+  id: item.id,
+  url: item.path,
+  title: item.title,
+  artist: item.artist || '',
+  artwork: encodeURI(item.thumb),
+  pitchAlgorithm: 'voice'
+}));
+
