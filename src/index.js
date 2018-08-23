@@ -1,26 +1,12 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { Provider, connect } from 'react-redux';
-import { StatusBar, View } from 'react-native';
-// import { AppNavigator } from './container/Root';
+import { StatusBar, View, Platform, AppRegistry } from 'react-native';
+import { AppNavigator } from './container/Root';
 import reducers from './reducers';
-import { createStackNavigator } from 'react-navigation';
 import { createReactNavigationReduxMiddleware, reduxifyNavigator } from 'react-navigation-redux-helpers';
 import AudioPlayer from './container/AudioPlayer.js';
-import HomeContainer from './container/Home';
-import Chapters from "./container/Chapters"; //eslint-disable-line
-
-export const AppNavigator = createStackNavigator(
-  {
-    Home: { screen: HomeContainer },
-    Chapters: { screen: Chapters },
-    AudioPlayer: { screen: AudioPlayer }
-  },
-  {
-    mode: 'card',
-    headerMode: 'screen'
-  }
-);
+import TrackPlayer from 'react-native-track-player';
 
 const navigationMiddleware = createReactNavigationReduxMiddleware(
   'root',
@@ -32,15 +18,21 @@ const store = createStore(
   compose(applyMiddleware(thunk, navigationMiddleware),
   window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : noop => noop) //eslint-disable-line
 );
-// const store = createStoreWithMiddleware(reducers(AppNavigator));
+
 const mapStateToProps = state => ({
   state: state.navigation,
 });
 
-console.log("AppNavigator", AppNavigator);
-
 const App = reduxifyNavigator(AppNavigator, 'root');
 const AppWithNavigationState = connect(mapStateToProps)(App);
+
+// bind the store to the track player event handler, so we can update
+// the store as a response to the different events e.g. remote-play, ducking, ...etc
+if (Platform.OS === 'android') {
+  AppRegistry.registerHeadlessTask('TrackPlayer', () => require('./trackPlayerEventHandler.js').bind(null, store));
+} else {
+  TrackPlayer.registerEventHandler(require('./trackPlayerEventHandler.js').bind(null, store));
+}
 
 const Main = () => (
   <Provider store={store}>
