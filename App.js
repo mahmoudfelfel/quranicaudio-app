@@ -12,6 +12,11 @@ import {
   View
 } from 'react-native';
 
+import { Sentry } from 'react-native-sentry';
+
+Sentry.config('https://971e30ae411b4b9487c00e5e290d3df3@sentry.io/1296064').install();
+
+
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
     'Cmd+D or shake for dev menu',
