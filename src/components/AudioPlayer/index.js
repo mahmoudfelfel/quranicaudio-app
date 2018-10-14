@@ -16,7 +16,7 @@ import {
 } from '../../components/PlayerButtons';
 import * as Progress from "react-native-progress"; //eslint-disable-line
 import PlayerProgressBar from './PlayerProgressBar';
-import Sentry from 'react-native-sentry';
+import { Sentry } from 'react-native-sentry';
 
 class AudioPlayer extends Component {
   state = {

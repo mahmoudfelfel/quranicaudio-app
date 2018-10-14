@@ -1,5 +1,5 @@
 import { GET_FILES_FAIL, GET_FILES } from './constants';
-import Sentry from 'react-native-sentry';
+import { Sentry } from 'react-native-sentry';
 
 export const files = data => ({
   type: GET_FILES,

@@ -1,5 +1,5 @@
 import { FETCH_RECITERS } from './constants';
-import Sentry from 'react-native-sentry';
+import { Sentry } from 'react-native-sentry';
 
 export const reciters = data => ({
   type: FETCH_RECITERS,

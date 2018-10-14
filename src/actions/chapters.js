@@ -1,5 +1,5 @@
 import { FETCH_CHAPTERS, SELECT_CHAPTER_TO_PLAY } from './constants';
-import Sentry from 'react-native-sentry';
+import { Sentry } from 'react-native-sentry';
 
 export const chapters = data => ({
   type: FETCH_CHAPTERS,
