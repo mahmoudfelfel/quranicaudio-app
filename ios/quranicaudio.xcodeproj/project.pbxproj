@@ -45,6 +45,7 @@
 		52A2FFFCB1414E888AB98D1B /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA5C757A0DD14C5AA0DD7365 /* FontAwesome5_Solid.ttf */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		6155AC9A2BA14EC094204FC9 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1624FA57629F4FAAA34B434D /* MaterialCommunityIcons.ttf */; };
+		635C9ACE88614F23A21A1EB8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BD539E800C14A33A1A15AA1 /* libz.tbd */; };
 		737E269243C74478BA7F871F /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0643DB93CD9F4A6BA56CEF67 /* FontAwesome.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		87EBAEED5E2948C0A31B5831 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9201E557913A44C0B1A66C9B /* Feather.ttf */; };
@@ -483,6 +484,8 @@
 				F1C5DC63952B4D919BA44527 /* libRNVectorIcons.a in Frameworks */,
 				2C6FB26FA0714BF683DC4EFD /* libRCTVideo.a in Frameworks */,
 				8F63D808B7C54C3D97E1FD39 /* libRNTrackPlayer.a in Frameworks */,
+				4080044209AE41A89AA5F5E1 /* libRNSentry.a in Frameworks */,
+				635C9ACE88614F23A21A1EB8 /* libz.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -882,6 +885,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = 4LTYKVQYZX;
 						LastSwiftMigration = 940;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -1510,12 +1514,14 @@
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
+				DEVELOPMENT_TEAM = 4LTYKVQYZX;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-music-control/ios",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-video/ios",
 					"$(SRCROOT)/../node_modules/react-native-track-player/ios/RNTrackPlayer/**",
+					"$(SRCROOT)/../node_modules/react-native-sentry/ios/**",
 				);
 				INFOPLIST_FILE = quranicaudio/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -1525,6 +1531,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.app.quranicaudio;
 				PRODUCT_NAME = quranicaudio;
 				SWIFT_OBJC_BRIDGING_HEADER = "quranicaudio-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1540,12 +1547,14 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4LTYKVQYZX;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-music-control/ios",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-video/ios",
 					"$(SRCROOT)/../node_modules/react-native-track-player/ios/RNTrackPlayer/**",
+					"$(SRCROOT)/../node_modules/react-native-sentry/ios/**",
 				);
 				INFOPLIST_FILE = quranicaudio/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -1555,6 +1564,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.app.quranicaudio;
 				PRODUCT_NAME = quranicaudio;
 				SWIFT_OBJC_BRIDGING_HEADER = "quranicaudio-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
