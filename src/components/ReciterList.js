@@ -12,6 +12,12 @@ const Text = styled.Text`
   padding: ${props => (props.divider ? '10px' : '0')};
 `;
 
+const Description = styled.Text`
+  color: #454140;
+  font-size: 14px;
+  marginTop: 5px;
+`;
+
 class Reciters extends React.PureComponent {
   renderHaramainSection = (reciters) => {
     const Madinah = reciters.filter(item => item.name.indexOf('Madinah') > -1);
@@ -32,11 +38,15 @@ class Reciters extends React.PureComponent {
       <ListItem
         key={reciter.id}
         style={{
-          marginRight: 10
+          marginRight: 10,
+          flex: 1,
+          flexDirection: 'column',
+          alignItems: 'flex-start'
         }}
         onPress={() => this.props.actions.navigate('Chapters', { reciter })}
       >
         <Text>{reciter.name}</Text>
+        {reciter.description ? <Description>{reciter.description}</Description> : null}
       </ListItem>
     ));
   }
