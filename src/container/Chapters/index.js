@@ -30,7 +30,7 @@ class Chapters extends Component {
   }
 
   render() {
-    const { navigation, chapters, actions, search, files } = this.props;
+    const { navigation, chapters, actions, search, files, selectedSurah } = this.props;
     const { navigate } = navigation;
     const reciter = navigation.state.params.reciter;
 
@@ -44,6 +44,7 @@ class Chapters extends Component {
           reciter={reciter}
           actions={{ ...actions, navigate }}
           search={search}
+          selectedSurah={selectedSurah}
         />
       </Container>
     );
@@ -58,7 +59,8 @@ function mapStateToProps(state) {
   return {
     chapters: state.chapters.chapters,
     files: state.files.files,
-    search: state.search
+    search: state.search,
+    selectedSurah: state.player ? state.player.selectedSurah : null
   };
 }
 

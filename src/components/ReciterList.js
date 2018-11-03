@@ -1,14 +1,15 @@
 import React from 'react';
 import formatRecitersByLetter from '../utils/sortNames';
 import { FlatList } from 'react-native';
-import { ListItem } from 'native-base';
+import { ListItem, View } from 'native-base';
 import styled from 'styled-components/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { isSelectedReciter } from '../utils';
 
 const Text = styled.Text`
   color: ${props => (props.divider ? 'white' : 'black')};
   font-size: 16px;
-  background: ${props => (props.divider ? '#258489' : 'white')};
+  backgroundColor: ${props => (props.divider ? '#258489' : 'transparent')};
   padding: ${props => (props.divider ? '10px' : '0')};
 `;
 
@@ -38,10 +39,14 @@ class Reciters extends React.PureComponent {
       <ListItem
         key={reciter.id}
         style={{
-          marginRight: 10,
+          marginRight: 0,
+          marginLeft: 0,
+          paddingright: 10,
+          paddingLeft: 10,
           flex: 1,
           flexDirection: 'column',
-          alignItems: 'flex-start'
+          alignItems: 'flex-start',
+          backgroundColor: isSelectedReciter(reciter, this.props.selectedSurah) ? '#ddd' : '#fff',
         }}
         onPress={() => this.props.actions.navigate('Chapters', { reciter })}
       >
@@ -61,10 +66,10 @@ class Reciters extends React.PureComponent {
 
     if (item.hasReciters) {
       return (
-        <React.Fragment>
+        <View >
           <Text divider>{item.letter}</Text>
           {this.renderListItems(item.reciters)}
-        </React.Fragment>
+        </View>
       );
     }
 

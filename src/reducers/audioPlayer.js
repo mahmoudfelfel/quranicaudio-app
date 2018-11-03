@@ -4,6 +4,7 @@ import {
   AUDIO_PLAYER_MINIMISE,
   UPDATE_IS_PLAYING,
   UPDATE_IS_BACKGROUND_PLAY,
+  AUDIO_PLAYER_SET_SELECTED_SURAH,
 } from '../actions/constants';
 
 const initialState = {
@@ -21,6 +22,8 @@ export default function surahs(state = initialState, action) {
       return { surahs: data, status: 'success' };
     case AUDIO_PLAYER_SET_SELECTED_SURAH_INDEX:
       return { ...state, surahIndex: data, minimise: false };
+    case AUDIO_PLAYER_SET_SELECTED_SURAH:
+      return { ...state, selectedSurah: data };
     case AUDIO_PLAYER_MINIMISE:
     case UPDATE_IS_PLAYING:
     case UPDATE_IS_BACKGROUND_PLAY:

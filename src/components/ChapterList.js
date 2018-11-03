@@ -3,6 +3,7 @@ import * as Utils from '../utils/audio';
 import { Linking, FlatList } from 'react-native';
 import { ListItem } from 'native-base';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { isSelectedSurah } from '../utils';
 
 const Duration = styled.Text`
   text-align: right;
@@ -46,18 +47,19 @@ export default (props) => {
       </NoneFound>
     );
   }
-  const Chapter = (chapter) => {
-    const duration =
-      props.files && props.files[chapter.id]
-        ? Utils.secondTime(props.files[chapter.id - 1].format.duration)
-        : '00:00';
+  const Chapter = (chapter, file) => {
+    const shouldHighlightRow = isSelectedSurah(file, props.selectedSurah);
+    const duration = file ? Utils.secondTime(file.format.duration) : '00:00';
     return (
       <ListItem
         style={{
-
-          marginRight: 10
+          backgroundColor: shouldHighlightRow ? '#ddd' : 'transparent',
+          marginRight: 0,
+          marginLeft: 0,
+          paddingright: 10,
+          paddingLeft: 10,
         }}
-        key={chapter.id}
+        key={`file_${file.surah_id}`}
         onPress={() =>
           props.actions.selectChapter({
             reciter: props.reciter,
@@ -66,7 +68,7 @@ export default (props) => {
       >
         <ItemContainer>
           <Text>
-            {chapter.name.simple}
+            {chapter && chapter.name.simple}
           </Text>
           <Read
             onPress={() =>
@@ -84,8 +86,8 @@ export default (props) => {
 
   return (
     <FlatList
-      data={props.chapters}
-      renderItem={({ item }) => Chapter(item)}
+      data={props.files} // iterating over files to make sure we won't have any chapters without audio files
+      renderItem={({ item }) => Chapter(props.chapters[item.surah_id - 1], item)}
     />
   );
 };

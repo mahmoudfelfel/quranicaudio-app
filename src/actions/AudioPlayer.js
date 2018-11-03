@@ -4,6 +4,7 @@ import {
   AUDIO_PLAYER_MINIMISE,
   UPDATE_IS_PLAYING,
   UPDATE_IS_BACKGROUND_PLAY,
+  AUDIO_PLAYER_SET_SELECTED_SURAH,
 } from './constants';
 
 const surahs = list => ({
@@ -16,6 +17,11 @@ const surahIndex = index => ({
   data: index
 });
 
+const setSurahItem = surah => ({
+  type: AUDIO_PLAYER_SET_SELECTED_SURAH,
+  data: surah
+});
+
 export const setPlayingSurah = () => {};
 
 export const setItemsList = surahsList => (dispatch) => {
@@ -24,6 +30,10 @@ export const setItemsList = surahsList => (dispatch) => {
 
 export const setSelectedItemIndex = selectedItemIndex => (dispatch) => {
   dispatch(surahIndex(selectedItemIndex));
+};
+
+export const setSelectedItem = selectedItem => (dispatch) => {
+  dispatch(setSurahItem(selectedItem));
 };
 
 export const minimisePlayer = (minimise = false) => ({

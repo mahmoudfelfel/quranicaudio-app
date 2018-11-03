@@ -69,7 +69,7 @@ class Home extends Component {
   }
 
   render() {
-    const { navigation, reciters, actions, search } = this.props;
+    const { navigation, reciters, actions, search, selectedSurah } = this.props;
     const { navigate } = navigation;
     if (reciters.length < 1) return <Loader />;
 
@@ -81,6 +81,7 @@ class Home extends Component {
           actions={{ ...actions, navigate }}
           search={search}
           section={this.state.section}
+          selectedSurah={selectedSurah}
         />
         <ModalFilterPicker
           visible={this.state.filterVisible}
@@ -102,7 +103,8 @@ function mapStateToProps(state) {
   return {
     reciters: state.reciters.reciters,
     main: state.main,
-    search: state.search
+    search: state.search,
+    selectedSurah: state.player ? state.player.selectedSurah : null,
   };
 }
 
