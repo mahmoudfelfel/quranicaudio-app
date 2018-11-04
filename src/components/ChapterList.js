@@ -87,6 +87,7 @@ export default (props) => {
   return (
     <FlatList
       data={props.files} // iterating over files to make sure we won't have any chapters without audio files
+      extraData={props.selectedSurah}
       renderItem={({ item }) => Chapter(props.chapters[item.surah_id - 1], item)}
     />
   );

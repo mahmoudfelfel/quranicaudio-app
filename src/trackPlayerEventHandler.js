@@ -1,5 +1,5 @@
 import TrackPlayer from 'react-native-track-player';
-import { updateIsPlaying, setSelectedItemIndex } from './actions/AudioPlayer';
+import { updateIsPlaying, setSelectedItemIndex, setSelectedItem } from './actions/AudioPlayer';
 import { selectChapter } from './actions';
 
 
@@ -31,13 +31,21 @@ module.exports = async (store, data) => {
     await TrackPlayer.skip(data.id);
     store.dispatch(updateIsPlaying(true));
   } else if (data.type === 'remote-next') {
+    const { player: { selectedIndex, selectedSurah }, chapters } = store.getState();
     store.dispatch(updateIsPlaying(false));
     TrackPlayer.stop();
-    TrackPlayer.skipToNext().then(() => store.dispatch(updateIsPlaying(true)));
+    await TrackPlayer.skipToNext();
+    store.dispatch(updateIsPlaying(true));
+    store.dispatch(setSelectedItemIndex(selectedIndex));
+    store.dispatch(setSelectedItem({ ...chapters[selectedIndex - 1], reciterId: selectedSurah.reciterId }));
   } else if (data.type === 'remote-previous') {
+    const { player: { selectedIndex, selectedSurah }, chapters } = store.getState();
     store.dispatch(updateIsPlaying(false));
     TrackPlayer.stop();
-    TrackPlayer.skipToPrevious().then(() => store.dispatch(updateIsPlaying(true)));
+    await TrackPlayer.skipToPrevious();
+    store.dispatch(updateIsPlaying(true));
+    store.dispatch(setSelectedItemIndex(selectedIndex));
+    store.dispatch(setSelectedItem({ ...chapters[selectedIndex - 1], reciterId: selectedSurah.reciterId }));
   } else if (data.type === 'remote-seek') {
     TrackPlayer.seekTo(data.position);
   } else if (data.type === 'remote-duck') {

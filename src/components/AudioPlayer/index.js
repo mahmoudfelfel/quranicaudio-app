@@ -26,7 +26,7 @@ class AudioPlayer extends Component {
 
   async componentDidMount() {
     try {
-      const { chapters: { chapters, selectedChapter }, selection: {reciter} } = this.props;
+      const { chapters: { chapters, selectedChapter }, selection: { reciter } } = this.props;
       this.props.actions.setItemsList(chapters);
       this.props.actions.setSelectedItemIndex(selectedChapter);
       this.props.actions.setSelectedItem({ ...chapters[selectedChapter - 1], reciterId: reciter.id });
